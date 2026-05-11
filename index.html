@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -15,14 +16,18 @@
             align-items: center;
             height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            touch-action: none; /* Prevent browser handling of gestures like pinch zoom */
+            touch-action: none;
+            /* Prevent browser handling of gestures like pinch zoom */
         }
+
         #gameCanvas {
-            background-color: #87CEEB; /* Sky blue */
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background-color: #87CEEB;
+            /* Sky blue */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             max-width: 100%;
             max-height: 100%;
         }
+
         #ui {
             position: absolute;
             top: 0;
@@ -33,34 +38,40 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            pointer-events: none; /* Let clicks pass through to canvas */
+            pointer-events: none;
+            /* Let clicks pass through to canvas */
         }
+
         .screen {
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             pointer-events: auto;
             transition: opacity 0.3s, transform 0.3s;
             max-width: 80%;
         }
+
         .hidden {
             opacity: 0;
             pointer-events: none;
             display: none;
             transform: scale(0.9);
         }
+
         h1 {
             margin: 0 0 20px 0;
             color: #2c3e50;
             font-size: 2.5rem;
         }
+
         p {
             color: #7f8c8d;
             margin-bottom: 30px;
             font-size: 1.1rem;
         }
+
         button {
             background-color: #27ae60;
             color: white;
@@ -75,25 +86,30 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         button:active {
             transform: translateY(3px);
             box-shadow: 0 3px 6px rgba(39, 174, 96, 0.3);
         }
+
         button:hover {
             background-color: #2ecc71;
         }
+
         #scoreDisplay {
             position: absolute;
             top: 30px;
             font-size: 50px;
             font-weight: bold;
             color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.6);
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
             pointer-events: none;
             z-index: 10;
         }
     </style>
 </head>
+<meta name="base:app_id" content="6a02664cf8601f8d21fe6add" />
+
 <body>
 
     <canvas id="gameCanvas"></canvas>
@@ -126,14 +142,14 @@
         // Game constants
         const CANVAS_WIDTH = 400;
         const CANVAS_HEIGHT = 650;
-        
+
         // Setup canvas size and responsive scaling
         function resizeCanvas() {
             const windowRatio = window.innerWidth / window.innerHeight;
             const canvasRatio = CANVAS_WIDTH / CANVAS_HEIGHT;
-            
+
             let displayWidth, displayHeight;
-            
+
             if (windowRatio < canvasRatio) {
                 displayWidth = window.innerWidth;
                 displayHeight = window.innerWidth / canvasRatio;
@@ -141,7 +157,7 @@
                 displayHeight = window.innerHeight;
                 displayWidth = window.innerHeight * canvasRatio;
             }
-            
+
             canvas.style.width = `${displayWidth}px`;
             canvas.style.height = `${displayHeight}px`;
         }
@@ -225,7 +241,7 @@
         // Generate background clouds for a little aesthetic touch
         function initClouds() {
             clouds = [];
-            for(let i=0; i<5; i++) {
+            for (let i = 0; i < 5; i++) {
                 clouds.push({
                     x: Math.random() * CANVAS_WIDTH,
                     y: Math.random() * (CANVAS_HEIGHT / 2),
@@ -248,7 +264,7 @@
 
         function spawnPipe() {
             // Difficulty curve: gap shrinks slightly, min gap is 100
-            const currentGap = Math.max(100, initialPipeGap - (score * 2.5)); 
+            const currentGap = Math.max(100, initialPipeGap - (score * 2.5));
             const minPipeHeight = 50;
             const maxPipeHeight = CANVAS_HEIGHT - minPipeHeight - currentGap - 30; // 30 is for the ground margin roughly
             const topPipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1)) + minPipeHeight;
@@ -269,8 +285,8 @@
             bird.y += bird.velocity;
 
             // Dynamic difficulty: pipe speed increases slowly
-            difficultyMultiplier = 1 + (score * 0.04); 
-            const currentSpeed = Math.min(basePipeSpeed * difficultyMultiplier, 7.5); 
+            difficultyMultiplier = 1 + (score * 0.04);
+            const currentSpeed = Math.min(basePipeSpeed * difficultyMultiplier, 7.5);
 
             // Update clouds (background parallax)
             clouds.forEach(cloud => {
@@ -318,7 +334,7 @@
                     score++;
                     p.passed = true;
                     scoreDisplay.innerText = score;
-                    
+
                     // Simple animation for score text
                     scoreDisplay.style.transform = 'scale(1.3)';
                     setTimeout(() => scoreDisplay.style.transform = 'scale(1)', 150);
@@ -348,21 +364,21 @@
             clouds.forEach(cloud => {
                 ctx.beginPath();
                 ctx.arc(cloud.x, cloud.y, cloud.size, 0, Math.PI * 2);
-                ctx.arc(cloud.x + cloud.size*0.6, cloud.y - cloud.size*0.3, cloud.size*0.8, 0, Math.PI * 2);
-                ctx.arc(cloud.x + cloud.size*1.2, cloud.y, cloud.size*0.9, 0, Math.PI * 2);
+                ctx.arc(cloud.x + cloud.size * 0.6, cloud.y - cloud.size * 0.3, cloud.size * 0.8, 0, Math.PI * 2);
+                ctx.arc(cloud.x + cloud.size * 1.2, cloud.y, cloud.size * 0.9, 0, Math.PI * 2);
                 ctx.fill();
             });
 
             // Draw pipes
             for (let i = 0; i < pipes.length; i++) {
                 let p = pipes[i];
-                
+
                 // Main pipe body
                 const pipeGradient = ctx.createLinearGradient(p.x, 0, p.x + pipeWidth, 0);
                 pipeGradient.addColorStop(0, '#27ae60');
                 pipeGradient.addColorStop(0.5, '#2ecc71');
                 pipeGradient.addColorStop(1, '#27ae60');
-                
+
                 ctx.fillStyle = pipeGradient;
                 ctx.strokeStyle = '#2c3e50';
                 ctx.lineWidth = 3;
@@ -373,7 +389,7 @@
                 // Top pipe lip
                 ctx.fillRect(p.x - 4, p.topHeight - 25, pipeWidth + 8, 25);
                 ctx.strokeRect(p.x - 4, p.topHeight - 25, pipeWidth + 8, 25);
-                
+
                 // Bottom pipe
                 ctx.fillRect(p.x, p.bottomY, pipeWidth, CANVAS_HEIGHT - p.bottomY);
                 ctx.strokeRect(p.x, p.bottomY, pipeWidth, CANVAS_HEIGHT - p.bottomY);
@@ -391,7 +407,7 @@
             // Draw Bird
             ctx.save();
             ctx.translate(bird.x, bird.y);
-            
+
             // Rotation based on velocity
             let rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, (bird.velocity * 0.1)));
             ctx.rotate(rotation);
@@ -418,7 +434,7 @@
             ctx.fillStyle = 'white';
             ctx.fill();
             ctx.stroke();
-            
+
             // Pupil
             ctx.beginPath();
             ctx.arc(7.5, -5, 2, 0, Math.PI * 2);
@@ -481,7 +497,7 @@
         canvas.addEventListener('mousedown', (e) => {
             if (gameState === 'PLAYING') jump();
         });
-        
+
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault(); // Prevent scrolling/zooming behavior
             if (gameState === 'PLAYING') jump();
@@ -498,7 +514,7 @@
                 } else if (gameState === 'GAMEOVER') {
                     // Prevent immediate restart via spacebar
                     if (!gameOverScreen.classList.contains('hidden')) {
-                         startGame();
+                        startGame();
                     }
                 }
             }
@@ -510,4 +526,5 @@
 
     </script>
 </body>
+
 </html>
